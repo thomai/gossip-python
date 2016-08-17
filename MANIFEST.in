@@ -1,0 +1,4 @@
+include *.txt
+include LICENSE
+recursive-include examples *.txt *.py
+prune examples/

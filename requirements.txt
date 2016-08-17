@@ -1,0 +1,4 @@
+Sphinx==1.4.1
+pytest==2.9.1
+pytest-html==1.8.0
+sphinx-rtd-theme==0.1.9
