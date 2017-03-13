@@ -1,23 +1,14 @@
 gossip-python
 =============
-:Team: Shackle Crackdown
-:Members: - Thomas Maier (ga85how@mytum.de)
-          - Anselm Binninger (ga85dib@mytum.de)
-          - Ralph O. Schaumann (ga65gis@mytum.de)
-:Group no: 09
-:Sub-project: Gossip
+Documentation is available here: https://pythonhosted.org/gossip-python/
 
-.. contents:: Table of Contents
-.. section-numbering::
+gossip-python is an implementation of the `gossip protocol <https://en.wikipedia.org/wiki/Gossip_protocol>`_
+. It started as an university project for the lecture `Peer-to-Peer Systems and Security <https://www.net.in.tum.de/teaching/ss16/p2p.html>`_ at the Technical University of Munich (TUM).
 
-Installation
-------------
-TODO
+The authors of gossip-python are Thomas Maier (ga85how@mytum.de), Anselm Binninger (ga85dib@mytum.de) and Ralph O. Schaumann (ga65gis@mytum.de).
 
-Basic Use
----------
-TODO
+Installation with pip:
 
-Examples
---------
-TODO
+ ``pip install gossip-python``
+
+Please use the `documentation <https://pythonhosted.org/gossip-python/>`_ for basic usage and examples.
