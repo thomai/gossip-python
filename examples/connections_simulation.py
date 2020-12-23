@@ -167,8 +167,8 @@ class Simulation:
 
         graph = networkx.nx.Graph()
         for client in clients:
-            logging.error(client.get_ident())
-            logging.error(client.get_connection_idents())
+            logging.info(client.get_ident())
+            logging.info(client.get_connection_idents())
             for node in client.get_connections():
                 graph.add_edge(node.first_client.get_ident(), node.second_client.get_ident())
 
@@ -176,8 +176,8 @@ class Simulation:
         plt.savefig("path_graph.pdf")
         print("Network is connected: %s" % networkx.is_connected(graph))
         print("Average shortest path length: %s" % networkx.average_shortest_path_length(graph))
-        print("Average bipartite clustering coefficent %s" % networkx.average_clustering(graph))
-        print("Bipartite clustering coefficent %s" % networkx.clustering(graph))
+        print("Average bipartite clustering coefficient %s" % networkx.average_clustering(graph))
+        print("Bipartite clustering coefficient %s" % networkx.clustering(graph))
         print("degree_assortativity_coefficient %s" % networkx.degree_assortativity_coefficient(graph))
 
 
