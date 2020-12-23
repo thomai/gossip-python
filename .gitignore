@@ -299,3 +299,7 @@ documentation/_build/
 documentation/build/
 *.pyc
 .*
+
+# setup
+dist/
+gossip_python.egg-info/

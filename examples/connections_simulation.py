@@ -146,14 +146,14 @@ class Simulation:
         self._number_connections_per_client = number_connections_per_client
 
     def run(self):
-        ip_addresses = ['192.168.1.%s' % x for x in range(1, self._number_clients)]
+        ip_addresses = ['192.168.1.%s' % x for x in range(1, self._number_clients + 1)]
         ports = [x for x in range(1, 2)]
         clients = []
         progress = 0
         for ip_addr in ip_addresses:
+            progress += 1
             print_progress(progress, self._number_clients, suffix="Running simulation")
             for port in ports:
-                progress += 1
                 client = Client(ip_addr, port, clients[0] if len(clients) > 0 else None,
                                 max_chache_size=self._number_connections_per_client)
                 clients.append(client)
@@ -167,8 +167,8 @@ class Simulation:
 
         graph = networkx.nx.Graph()
         for client in clients:
-            logging.error(client.get_ident())
-            logging.error(client.get_connection_idents())
+            logging.info(client.get_ident())
+            logging.info(client.get_connection_idents())
             for node in client.get_connections():
                 graph.add_edge(node.first_client.get_ident(), node.second_client.get_ident())
 
@@ -176,8 +176,8 @@ class Simulation:
         plt.savefig("path_graph.pdf")
         print("Network is connected: %s" % networkx.is_connected(graph))
         print("Average shortest path length: %s" % networkx.average_shortest_path_length(graph))
-        print("Average bipartite clustering coefficent %s" % networkx.average_clustering(graph))
-        print("Bipartite clustering coefficent %s" % networkx.clustering(graph))
+        print("Average bipartite clustering coefficient %s" % networkx.average_clustering(graph))
+        print("Bipartite clustering coefficient %s" % networkx.clustering(graph))
         print("degree_assortativity_coefficient %s" % networkx.degree_assortativity_coefficient(graph))
 
 
