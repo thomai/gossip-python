@@ -13,9 +13,8 @@
 # limitations under the License.
 
 """
-    Submodule which handles the incoming API and P2P messages/connections/sockets.
-
-    It is called from the API and P2P layer asynchronously.
+Submodule to manage configuration files and loading them via a search path or
+an environment variable override.
 """
 
 __author__ = 'Anselm Binninger, Thomas Maier, Ralph Schaumann'
