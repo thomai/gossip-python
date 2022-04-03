@@ -40,7 +40,20 @@ Installation
 #. Install gossip
     .. code-block:: sh
 
-        pip install ./gossip-0.0.1.tar.gz
+        # From pypi
+        pip install gossip-python
+        
+        # Latest from github
+        pip install git+https://github.com/thomai/gossip-python.git
+
+        # Install for development from cloned repos
+        pip install -e .
+
+        # Several optional dependencies are also available
+        pip install -e .[test] # Pytest support
+        pip install -e .[doc] # Sphinx build support
+        pip install -e .[sim] # Simulation support
+        pip install -e .[sim,doc,test] # Full dev kit
 
 #. See Usage for more!
 
@@ -48,11 +61,22 @@ Installation
 Usage
 ###################
 
-Run gossip
+Creating configuration files
 ___________________
 
-* To start a new gossip instance on your machine, you first need to create a new directory called config at the same level of your python script.
-* Second, you need to add at least two files to that directory. The first file, called logging_config.ini is needed to specify the log level of this gossip instance
+    Gossip configurations can be stored in 3 different locations:
+
+    * ``[PROJECT DIRECTORY]/config/config.ini``
+    * ``~/.config/gossip/config.ini``
+    * ``~/.gossip/config.ini``
+
+    The later two are cross platform where ``~`` maps to ``/home/username`` in POSIX systems
+    or ``%USERPROFILE%`` in Windows. The configuration file can be explicitly specified by
+    setting the GOSSIP_CONFIG environment variable. Next create the following two configuration
+    files in one of the above search paths. If they are not created a template will be created
+    in ``~/.gossip/[CONFIG_FILE_NAME]``:
+
+**logger_config.ini**
 
 .. code-block:: ini
 
@@ -80,7 +104,7 @@ ___________________
     datefmt=%d.%m.%Y %H:%M:%S
 
 
-* Third, create a file called config.ini :
+**config.ini**
 
 .. code-block:: ini
 
@@ -105,33 +129,141 @@ For an example of a api application see this repository: `ChatNow! - Repository 
 If you want to test your gossip network you can download the latest ChatNow!
 Client from `ChatNow! - Downloads <https://bwk-software.com/builds/gossip-ui/>`_
 
-* Once you created these files you can create a python script like this to run your gossip instance
-
-.. code-block:: python
-
-    from gossip.gossip_main import main as run_gossip
-
-    if __name__ == "__main__":
-        run_gossip()
-
-
-Run simulation
+Run gossip
 ___________________
+
+    Gossip can be run in two ways after configuration.
+
+    * Entrypoint
+        .. code-block:: sh
+
+            gossip
+
+    * Python Module Execution
+        .. code-block:: sh
+
+            python -m gossip
+
+Run examples
+___________________
+
+
+    Examples are populated via the scripts convention in setup.py. The following
+    example scripts are available:
+
+    * gossip_connections_simulation.py
+    * gossip_peer_request_response.py
+    * gossip_receive_test.py
+    * gossip_send_test.py
+
+Simulation
+^^^^^^^^^^
 
   The simulation script generates a network based on the same algorithms that are used in gossip-python.
   This can especially useful if you want to see how the network behaves using different configuration paremeters.
   Note that you need to install the following requirements yourself to get the simulation running:
+
     .. code-block:: sh
 
-        pip install networkx
-        pip install matplotlib
+        pip install gossip-python[sim]
 
-  To run the simulation, which creates a network diagram, see following code.
+  To run the simulation, simply execute it by calling the 
 
-.. code-block:: python
+    .. code-block:: sh
 
-    from examples.connections_simulation import Simulation
+        gossip_connections_simulation.py
 
-    if __name__ == "__main__":
-        sim = Simulation(number_clients=30, number_connections_per_client=5)
-        sim.run()
+Send and Receive Test
+^^^^^^^^^^^^^^^^^^^^^
+
+    To run a simple send/receive test do the following
+
+    .. code-block:: sh
+
+        gossip &
+        GOSSIP_PID=$!
+        gossip_receive_test.py &
+        gossip_send_test
+        # Send and receive tests will now connect to each other...
+
+        # When they're done executing cleanup the gossip instance
+        kill -9 $GOSSIP_PID
+
+Peer Request Response
+^^^^^^^^^^^^^^^^^^^^^
+
+    To run a simple send/receive test do the following
+
+    .. code-block:: sh
+        
+        gossip &
+        GOSSIP_PID=$!
+        gossip_peer_request_response.py
+        # When done executing cleanup the gossip instance
+        kill -9 $GOSSIP_PID
+
+Development with Docker
+_______________________
+
+    To make it easy to develop rapidly a Dockerfile has been created and can
+    be build-run using the following command:
+
+Build Standard
+^^^^^^^^^^^^^^
+
+    This builds a docker container with gossip installed and a man-page generated.
+
+    .. code-block:: sh
+
+        docker build -t gossip:latest .
+        docker run --rm -it \ # Run interactive but get rid of container after
+            -v /path/to/config/dir:/root/.gossip \ # (Optional) Mount local configurations to container
+            -p6001:6001 -p7001:7001 \ # Forward ports
+            gossip:latest
+        root@ec6c0e56f101:/app# man gossip-python
+        # Displays man-page
+        root@ec6c0e56f101:/app# gossip & # Run the server
+        root@ec6c0e56f101:/app# gossip_connections_simulation.py # Run an example
+
+
+Build Slim
+^^^^^^^^^^
+
+    To build with only the bare minimum requirements (no documentation, test or 
+    simulation dependencies), specify an empty argument for optional_deps:
+
+    .. code-block:: sh
+
+        docker build --build-arg optional_deps= -t gossip:latest 
+        docker run --rm -it -p6001:6001 -p7001:7001 gossip:latest
+
+Recommended Development Build
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    For testing it's recommended to install all dependencies:
+
+    .. code-block:: sh
+
+        docker build --build-arg optional_deps=[test,doc,sim] -t gossip:latest .
+
+        # Run development docker container, will drop to a bash shell
+        docker run --rm -it -p6001:6001 -p7001:7001 gossip:latest /bin/bash
+
+        # Run tests and exit
+        docker run --rm -it gossip:latest pytest
+
+        # Just run the gossip_connections_simulation.py and launch a webserver to view the pdf
+        docker run --rm -it -p8000:8000 gossip:latest bash -c "gossip_connections_simulation.py && python -m http.server"
+        # You can then view the pdf at http://localhost:8000/path_graph.pdf
+
+    You can also do one-time builds of the documentation to view as html or pdf outputs
+
+    .. code-block:: sh
+
+        # Build html docs and launch a server on localhost:8000 to view them
+        docker run --rm -it -p8000:8000 gossip:latest bash -c "cd documentation && make html && python -m http.server --directory build/html"
+
+        # Build the container with texlive-base and build pdf docs and launch a server on localhost:8000 to view them
+        docker build --build-arg extra_os_packages="texlive-latex-extra latexmk" -t gossip:latest .
+        docker run --rm -it -p8000:8000 gossip:latest bash -c "cd documentation && make latexpdf && python -m http.server --directory build/latex"
+        # Pdf is then available via http://localhost:8000/gossip-python.pdf

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2016 Anselm Binninger, Thomas Maier, Ralph Schaumann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +23,7 @@ __author__ = 'Anselm Binninger, Ralph Schaumann, Thomas Maier'
 try:
     
     port = 6001
-    ip_address = 'localhost'
+    ip_address = '127.0.0.1'
 
     print('sending garbage')
     sock = socket.socket()

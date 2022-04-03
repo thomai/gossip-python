@@ -12,4 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__author__ = 'Anselm Binninger, Ralph Schaumann, Thomas Maier'
+"""
+    Submodule which handles the incoming API and P2P messages/connections/sockets.
+
+    It is called from the API and P2P layer asynchronously.
+"""
+
+__author__ = 'Anselm Binninger, Thomas Maier, Ralph Schaumann'

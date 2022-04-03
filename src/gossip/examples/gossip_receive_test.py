@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2016 Anselm Binninger, Thomas Maier, Ralph Schaumann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +21,7 @@ __author__ = 'Anselm Binninger, Ralph Schaumann, Thomas Maier'
 try:
     while True:
         sock = socket.socket()
-        sock.connect(('localhost', 6001))
+        sock.connect(('127.0.0.1', 6001))
         values = packing.receive_msg(sock)
         message_object = message.GOSSIP_MESSAGE_TYPES.get(values['code'], message.MessageOther)
         if 500 <= values['code'] < 520:

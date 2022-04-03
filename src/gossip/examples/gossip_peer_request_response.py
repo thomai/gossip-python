@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2016 Anselm Binninger, Thomas Maier, Ralph Schaumann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +22,8 @@ __author__ = 'Anselm Binninger, Ralph Schaumann, Thomas Maier'
 
 sock1 = socket.socket()
 sock2 = socket.socket()
-sock1.connect(('localhost', 6001))
-sock2.connect(('localhost', 6001))
+sock1.connect(('127.0.0.1', 6001))
+sock2.connect(('127.0.0.1', 6001))
 values = packing.pack_gossip_peer_request()
 packing.send_msg(sock1, values['code'], values['data'])
 values = packing.receive_msg(sock1)

@@ -1,6 +1,5 @@
 init:
-	pip install -r requirements.txt
+	pip3 install .
 
 test:
-	py.test tests --html=documentation/_build/html/test_output.html
-
+	pytests tests --html=documentation/build/html/test_output.html

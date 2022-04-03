@@ -11,4 +11,13 @@ Installation with pip:
 
  ``pip install gossip-python``
 
+
+Development install with pip:
+
+.. code-block:: sh
+        # From root of the project structure
+        pip install -e .[test] # Pytest support
+        pip install -e .[doc] # Sphinx build support
+        pip install -e .[sim] # Simulation support
+
 Please use the `documentation <https://pythonhosted.org/gossip-python/>`_ for basic usage and examples.

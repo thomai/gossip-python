@@ -211,7 +211,7 @@ def receive_msg(sock):
     :return: a dict of the decoded values
     """
     msg_hdr = sock.recv(4)
-    if len(msg_hdr) is 0:
+    if len(msg_hdr) == 0:
         raise GossipClientDisconnectedException('Client disconnected')
     elif len(msg_hdr) < 4:
         raise GossipMessageException('Invalid header (< 4)')
