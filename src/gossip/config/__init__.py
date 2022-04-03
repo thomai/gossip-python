@@ -12,4 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__author__ = 'Anselm Binninger, Ralph Schaumann, Thomas Maier'
+"""
+Submodule to manage configuration files and loading them via a search path or
+an environment variable override.
+"""
+
+__author__ = 'Anselm Binninger, Thomas Maier, Ralph Schaumann'

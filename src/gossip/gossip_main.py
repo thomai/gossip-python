@@ -27,13 +27,11 @@ from gossip.control.api_controller import APIController
 from gossip.control.p2p_controller import P2PController
 from gossip.control.message_cache import GossipMessageCache
 from gossip.control.api_registrations import APIRegistrationHandler
-from gossip.util import config_parser
+from gossip.config import config_parser
 
 __author__ = 'Anselm Binninger, Thomas Maier, Ralph Schaumann'
 
-DEFAULT_CONFIG_PATH = 'config/config.ini'
-
-logging.config.fileConfig('config/logging_config.ini')
+logging.config.fileConfig(config_parser.get_config_path(config_parser.DEFAULT_LOGGING_CONFIG_FILE_NAME))
 
 
 def signal_handler(signal, frame):
@@ -43,9 +41,11 @@ def signal_handler(signal, frame):
 
 def main():
     cli_parser = ArgumentParser()
-    cli_parser.add_argument('-c', '--config', help='Configuration file path', default=DEFAULT_CONFIG_PATH)
+    cli_parser.add_argument('-c', '--config', help='Configuration file path', default=None)
     cli_args = cli_parser.parse_args()
-    config_file_path = cli_args.config
+    config_file_path = config_parser.get_config_path(config_parser.DEFAULT_CONFIG_FILE_NAME) \
+                       if cli_args.config is None \
+                       else cli_args.config
 
     # Check cli arguments
     if not os.path.isfile(config_file_path):

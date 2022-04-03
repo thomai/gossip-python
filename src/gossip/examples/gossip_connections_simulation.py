@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2016 Anselm Binninger, Thomas Maier, Ralph Schaumann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@ import random
 import logging
 import logging.config
 import argparse
-import networkx
+import networkx as nx
 from multiprocessing import Lock
 
 from gossip.communication.connection import GossipConnectionPool
@@ -165,20 +166,20 @@ class Simulation:
                     connection = Connection(client, conn.second_client)
                     connection.initiate()
 
-        graph = networkx.nx.Graph()
+        graph = nx.Graph()
         for client in clients:
             logging.info(client.get_ident())
             logging.info(client.get_connection_idents())
             for node in client.get_connections():
                 graph.add_edge(node.first_client.get_ident(), node.second_client.get_ident())
 
-        networkx.draw(graph, with_labels=False)
+        nx.draw(graph, with_labels=False)
         plt.savefig("path_graph.pdf")
-        print("Network is connected: %s" % networkx.is_connected(graph))
-        print("Average shortest path length: %s" % networkx.average_shortest_path_length(graph))
-        print("Average bipartite clustering coefficient %s" % networkx.average_clustering(graph))
-        print("Bipartite clustering coefficient %s" % networkx.clustering(graph))
-        print("degree_assortativity_coefficient %s" % networkx.degree_assortativity_coefficient(graph))
+        print("Network is connected: %s" % nx.is_connected(graph))
+        print("Average shortest path length: %s" % nx.average_shortest_path_length(graph))
+        print("Average bipartite clustering coefficient %s" % nx.average_clustering(graph))
+        print("Bipartite clustering coefficient %s" % nx.clustering(graph))
+        print("degree_assortativity_coefficient %s" % nx.degree_assortativity_coefficient(graph))
 
 
 parser = argparse.ArgumentParser(description='Run gossip simulation')

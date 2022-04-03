@@ -1,6 +1,4 @@
-from control.api_registrations import APIRegistrationHandler
-
-__author__ = ''
+from gossip.control.api_registrations import APIRegistrationHandler
 
 
 def test_api_registrations():
